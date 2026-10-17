@@ -147,14 +147,14 @@ test('起稿演示文稿：同时写模板、正文与校徽', async () => {
   const value = await call('goodtypst_new', {
     kind: 'slides',
     path: 'talk/slides.typ',
-    title: 'MG-VQA',
+    title: '示例标题',
     subtitle: '操作驱动的视觉问答',
     author: '姚行健',
     institute: '北京大学信息科学技术学院',
     date: '2026 年 10 月 14 日'
   });
   assert.deepEqual(value.files, ['talk/slides.typ', 'talk/template.typ', 'talk/assets/images/pku-logo.svg']);
-  assert.match(fs.writes.get('talk/slides.typ'), /#let deck-title = "MG-VQA"/);
+  assert.match(fs.writes.get('talk/slides.typ'), /#let deck-title = "示例标题"/);
   assert.match(fs.writes.get('talk/template.typ'), /#let pku-theme/);
   assert.match(fs.writes.get('talk/assets/images/pku-logo.svg'), /data:image\/png;base64/);
 });

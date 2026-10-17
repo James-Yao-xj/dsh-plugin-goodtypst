@@ -37,13 +37,13 @@ test('阅读文稿只产出一个文件，保留 ctyp 前导与内容标记', ()
 
 test('演示文稿产出主题、正文与内嵌校徽', () => {
   const { deck, theme, logo } = slidesSources({
-    title: 'MG-VQA',
+    title: '示例标题',
     subtitle: '副标题',
     author: '作者',
     institute: '单位',
     date: '日期'
   });
-  assert.match(deck, /#let deck-title = "MG-VQA"/);
+  assert.match(deck, /#let deck-title = "示例标题"/);
   assert.match(deck, /#show: doc => pku-theme/);
   assert.match(theme, /#let slide\(/);
   assert.match(theme, /#let keypoint\(/);
