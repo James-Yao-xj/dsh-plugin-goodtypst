@@ -60,7 +60,7 @@ test('阅读文稿：颜色、卡片、多栏、改版式全部报 error', () =>
   }
 });
 
-test('演示文稿：带框卡片报 error，无框两列与主题色不报', () => {
+test('演示文稿：带框卡片与并列结构都报 error，主题色不报', () => {
   const body = [
     CONTENT_MARKER,
     '#slide(title: "结论", section: "语境")[',
@@ -75,8 +75,22 @@ test('演示文稿：带框卡片报 error，无框两列与主题色不报', ()
   const rules = rulesOf(result);
   assert.ok(rules.includes('slides.box'));
   assert.ok(rules.includes('slides.rect'));
+  assert.ok(rules.includes('slides.columns'), '两列 keypoint 并排要拦');
   assert.ok(!rules.some((rule) => rule.startsWith('slides.fill')), '主题色 fill 不该被拦');
 });
+
+
+test('演示文稿：大号数字块（metric）报 error，数字写进句子才放过', () => {
+  const bad = [CONTENT_MARKER, '#metric("36.2%", "说明")', '#metric("7,189", "路径数", color: pku-blue)'].join('\n');
+  const badResult = lint(bad, 'slides');
+  assert.equal(badResult.ok, false);
+  assert.equal(badResult.violations.filter((violation) => violation.rule === 'slides.metric').length, 2);
+
+  const good = [CONTENT_MARKER, '#slide(title: "数据规模", section: "R2R 与 RxR")[R2R 有 7,189 条路径、21,567 条指令。]'].join('\n');
+  const goodResult = lint(good, 'slides');
+  assert.equal(goodResult.ok, true, JSON.stringify(goodResult.violations));
+});
+
 
 test('演示文稿：自定义颜色与表格分别报 error / warn', () => {
   const body = [

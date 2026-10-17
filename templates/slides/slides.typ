@@ -25,13 +25,13 @@
 // ── 每页：title 是结论，section 是这句结论的语境 ──────────────────────
 //
 //   允许的构件（都在 template.typ 里）：
-//     · #keypoint("小标题", [正文]) —— 可以两列并排（grid 1fr 1fr）
-//     · #metric("36.2%", "说明")    —— 可以三列并排
+//     · #keypoint("小标题", [正文]) —— 一列往下排
 //     · #align(center)[#image("fig.png", width: 100%)]
 //     · #source-line[数据来源]
 //     · #text(size: 17pt, fill: pku-red)[一句强调]
 //
-//   禁止：带框/带底的卡片（rect、box、block 配 stroke/fill）、表格、
+//   禁止：带框/带底的卡片（rect、box、block 配 stroke/fill）、
+//   并列与多栏（grid、columns）、大号数字块（metric）、表格、
 //   大段正文（一页连续超过 3 行就不是幻灯片了）。
 
 #slide(title: "结论式标题", section: "这一页想让听众记住的一句话")[
@@ -44,7 +44,7 @@
 
 #slide(title: "第二页标题", section: "换一个角度说同一件事")[
   #v(0.45cm)
-  #keypoint("小标题一", [两列并排时，一列讲一个侧面，不要写成两段正文。])
+  #keypoint("小标题一", [一列往下排，一条要点讲一个侧面。])
   #v(0.55cm)
   #keypoint("小标题二", [仍然是无框文字，不加底色、不加边框。])
 ]

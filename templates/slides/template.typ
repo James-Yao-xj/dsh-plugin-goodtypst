@@ -85,12 +85,6 @@
   text(size: 8.5pt, fill: pku-gray)[#body]
 }
 
-#let metric(value, label, color: pku-red) = align(center)[
-  #text(size: 29pt, weight: "bold", fill: color)[#value]
-  #linebreak()
-  #text(size: 12pt, fill: pku-gray)[#label]
-]
-
 #let keypoint(title, body, color: pku-blue) = {
   text(size: 16pt, weight: "bold", fill: color)[#title]
   v(0.06cm)

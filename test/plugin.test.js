@@ -77,7 +77,7 @@ function mount(files = {}, overrides = {}, policy = undefined) {
 test('插件身份与依赖声明', () => {
   assert.equal(pluginName, 'goodtypst');
   assert.deepEqual(inject, ['tools', 'fs', 'systemPrompt']);
-  assert.equal(PLUGIN_VERSION, '0.2.0');
+  assert.equal(PLUGIN_VERSION, '0.3.0');
 });
 
 test('默认配置走 cordis.patch.yml 里承诺的那套值', () => {
@@ -107,7 +107,7 @@ test('不给 path 时只回报插件状态', async () => {
   const value = await call('goodtypst_status', {});
   assert.deepEqual(value, {
     ready: true,
-    pluginVersion: '0.2.0',
+    pluginVersion: '0.3.0',
     typstBinary: 'typst',
     maxSourceBytes: 4194304,
     templates: ['reading', 'slides']
@@ -216,7 +216,7 @@ test('风格检查：彩色卡片会被拦下并给出行号', async () => {
   assert.match(render('goodtypst_check', {}, value), /第 3 行/);
 });
 
-test('风格检查：演示文稿的带框卡片是 error，无框两列不是', async () => {
+test('风格检查：演示文稿的带框卡片与并列结构都是 error', async () => {
   const body = [
     '// GoodTypst:content',
     '#slide(title: "结论", section: "语境")[',
@@ -231,5 +231,6 @@ test('风格检查：演示文稿的带框卡片是 error，无框两列不是',
   const rules = value.violations.map((violation) => violation.rule);
   assert.ok(rules.includes('slides.box'));
   assert.ok(!rules.includes('slides.rect'));
+  assert.ok(rules.includes('slides.columns'));
   assert.equal(value.violations.filter((violation) => violation.rule === 'slides.box').length, 1);
 });
