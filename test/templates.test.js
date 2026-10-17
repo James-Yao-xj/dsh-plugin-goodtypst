@@ -15,6 +15,14 @@ test('两种模板都在清单里，且各有文件与约束', () => {
   }
 });
 
+test('模板清单里的约束与 lint 规则一致：并列结构与数字块都写明禁止', () => {
+  const slides = TEMPLATE_KINDS.find((kind) => kind.id === 'slides');
+  const text = slides.constraints.join('\n');
+  assert.match(text, /grid|columns/);
+  assert.match(text, /metric/);
+  assert.match(text, /卡片/);
+});
+
 test('setVariable 只改指定那一行，并做字符串转义', () => {
   const source = '#let a = "old"\n#let b = "keep"\n';
   const updated = setVariable(source, 'a', '带"引号"和\\反斜杠');
