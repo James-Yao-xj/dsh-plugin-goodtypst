@@ -16,8 +16,10 @@ import { apply, Config, PLUGIN_VERSION, inject, name as pluginName } from '../li
  */
 function fakeFs(files = {}) {
   const writes = new Map();
+  const policies = new Map();
   return {
     writes,
+    policies,
     async resolve(path) {
       const key = path.replace(/^\.\//, '');
       return { targetKey: key, displayPath: key };
@@ -32,8 +34,9 @@ function fakeFs(files = {}) {
       if (data === undefined) throw new Error(`ENOENT ${target.targetKey}`);
       return data.toString('utf8');
     },
-    async writeText(target, content) {
+    async writeText(target, content, _expected, _signal, policy) {
       writes.set(target.targetKey, content);
+      policies.set(target.targetKey, policy);
       files[target.targetKey] = Buffer.from(content);
       return { operation: 'create', version: 'v1', before: null, after: content };
     }
@@ -41,12 +44,13 @@ function fakeFs(files = {}) {
 }
 
 /** 把插件装上，返回工具表、系统提示段与调用辅助函数。 */
-function mount(files = {}, overrides = {}) {
+function mount(files = {}, overrides = {}, policy = undefined) {
   const tools = new Map();
   const sections = [];
   const fs = fakeFs(files);
   const ctx = {
     fs,
+    get: (service) => (service === 'sandboxPolicy' && policy !== undefined ? policy : undefined),
     tools: { register: (tool) => tools.set(tool.name, tool) },
     systemPrompt: {
       section: (section) => {
@@ -153,6 +157,13 @@ test('起稿演示文稿：同时写模板、正文与校徽', async () => {
   assert.match(fs.writes.get('talk/slides.typ'), /#let deck-title = "MG-VQA"/);
   assert.match(fs.writes.get('talk/template.typ'), /#let pku-theme/);
   assert.match(fs.writes.get('talk/assets/images/pku-logo.svg'), /data:image\/png;base64/);
+});
+
+test('把会话的沙箱策略交给 writeText，否则受限文件系统会拦掉工作区内写入', async () => {
+  const policy = { resolve: () => ({ mode: 'workspace-write', workspaceRoot: '/workspace' }) };
+  const { call, fs } = mount({}, {}, policy);
+  await call('goodtypst_new', { kind: 'reading', path: 'notes/a.typ' });
+  assert.deepEqual(fs.policies.get('notes/a.typ'), { mode: 'workspace-write', workspaceRoot: '/workspace' });
 });
 
 test('不覆盖已存在的文件', async () => {
