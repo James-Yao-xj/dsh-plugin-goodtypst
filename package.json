@@ -1,0 +1,56 @@
+{
+  "name": "dsh-plugin-goodtypst",
+  "version": "0.1.0",
+  "description": "GoodTypst：把 Typst 文档接进 DSH 会话，改稿、编译、看排版结果",
+  "type": "module",
+  "license": "MIT",
+  "author": "James-Yao-xj",
+  "icon": "./icon.svg",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/James-Yao-xj/dsh-plugin-goodtypst.git"
+  },
+  "homepage": "https://github.com/James-Yao-xj/dsh-plugin-goodtypst#readme",
+  "bugs": {
+    "url": "https://github.com/James-Yao-xj/dsh-plugin-goodtypst/issues"
+  },
+  "keywords": [
+    "dsh",
+    "deepseek-harness",
+    "cordis",
+    "plugin",
+    "typst",
+    "typesetting",
+    "pdf"
+  ],
+  "main": "lib/index.js",
+  "exports": {
+    ".": {
+      "default": "./lib/index.js"
+    },
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "cordis.patch.yml",
+    "icon.svg",
+    "README.md",
+    "LICENSE"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "dependencies": {
+    "@deepseek-ai/dsh-tools": "0.2.0-rc.2",
+    "@deepseek-ai/schemastery": "~3.18.4"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "~4.0.4"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.js"
+  }
+}

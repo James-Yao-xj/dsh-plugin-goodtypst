@@ -1,0 +1,15 @@
+# 这个 bundle 往 profile 里插入的插件行。
+#
+# profile 的层叠顺序是：dsh-base → dsh-web-app → 各 bundle 的 patch →
+# ~/.dsh/profiles/desktop/cordis.patch.yml → --patch 覆盖层。
+# 所以这里只声明「默认值」，想改任何一项，都在 profile 自己的
+# cordis.patch.yml 里用同样的 id 覆盖即可（覆盖是整块 config 替换）。
+- insert:
+    - id: goodtypst
+      name: 'dsh-plugin-goodtypst'
+      config:
+        # typst 编译器：默认走 PATH，也可以写绝对路径（例如 homebrew 的
+        # /opt/homebrew/bin/typst）。骨架阶段只用来回报配置，还不会真的调用。
+        typstBinary: typst
+        # 单个 .typ 源文件的字节上限：超过就报错，而不是把内存吃光。
+        maxSourceBytes: 4194304
