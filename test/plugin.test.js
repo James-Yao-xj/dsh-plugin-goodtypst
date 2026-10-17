@@ -160,6 +160,16 @@ test('不覆盖已存在的文件', async () => {
   await assert.rejects(() => call('goodtypst_new', { kind: 'reading', path: 'notes/old.typ' }), /已存在/);
 });
 
+test('写入被文件策略拦下时，报错改成能照着做的一句话', async () => {
+  const { call, fs } = mount();
+  fs.writeText = async () => {
+    const error = new Error('sandbox denied');
+    error.code = 'FS_SANDBOX_DENIED';
+    throw error;
+  };
+  await assert.rejects(() => call('goodtypst_new', { kind: 'reading', path: 'a.typ' }), /文件策略不允许写这个位置/);
+});
+
 test('kind 写错时给出可选值', async () => {
   const { call } = mount();
   await assert.rejects(() => call('goodtypst_new', { kind: 'paper', path: 'a.typ' }), /reading 或 slides/);

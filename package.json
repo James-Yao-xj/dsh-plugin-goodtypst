@@ -35,6 +35,7 @@
   },
   "files": [
     "lib",
+    "docs",
     "templates",
     "prompts",
     "cordis.patch.yml",
