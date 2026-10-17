@@ -26,7 +26,7 @@ Typst 是一套排版语言：一份 `.typ` 源文件编译成 PDF、PNG 或 SVG
 
 演示文稿：封面与内容页。页眉左侧是本页语境、右侧校徽，页脚右侧页码；标题用红、强调句用蓝，其余全是黑色正文。
 
-![演示文稿封面](docs/preview/slides-cover.png)
+![演示文稿封面](docs/preview/slides-cover-capybara.png)
 
 ![演示文稿内容页](docs/preview/slides-content.png)
 
