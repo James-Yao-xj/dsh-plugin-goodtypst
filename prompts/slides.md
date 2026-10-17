@@ -1,0 +1,34 @@
+# 演示文稿风格
+
+用途：课程汇报、论文分享、答辩。载体是 4:3 幻灯片，听众在台下听你讲。
+
+## 结构
+
+- 封面 5 个变量：`deck-title`、`deck-subtitle`、`deck-author`、`deck-institute`、`deck-date`。
+- 每页一个论点：`#slide(title: ..., section: ...)[...]`。
+  - `title` 是结论（「操作带来明显提升」），不是标签（「实验结果」）。
+  - `section` 是这句结论的语境（「8 个 VLM，600 道人工验证的问题」），不是章节名。
+- 一页只讲一件事，最多 3–4 条要点。
+- 结尾页给 1–3 条核心结论，不要「谢谢聆听」页。
+
+## 允许的构件
+
+- 无框要点块 `#keypoint("小标题", [正文])`，可以两列并排（`grid(columns: (1fr, 1fr), column-gutter: 0.7cm, ...)`）。
+- 数字 `#metric("36.2%", "说明")`，三列并排。
+- 居中图片 `#align(center)[#image("fig.png", width: 100%)]`。
+- 页底一行强调 `#text(size: 17pt, fill: pku-red)[...]`。
+- 来源说明 `#source-line[...]`。
+
+## 禁止
+
+- 带边框或底色的卡片：`rect`、`box`、`block` 配 `stroke` / `fill`。这是 AI 味最重的写法。
+- 表格。需要对比就用无框 `keypoint` 两列。
+- 大段正文：一页连续超过 3 行文字，就该改成要点。
+- 自定义颜色：只能用 `pku-red`、`pku-blue`、`pku-gray`、`pku-light`、`accent`。
+- 改写 `#set page`、`#set text`。版式由模板负责。
+- 每页堆两个以上层级：标题 + 副标题 + 列表 + 强调已经够了。
+
+## 文字密度
+
+- 一页正文不超过 60 个汉字（不含标题）。留白比文字重要。
+- 长句拆短；一个要点一行。

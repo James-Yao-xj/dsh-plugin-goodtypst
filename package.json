@@ -1,7 +1,7 @@
 {
   "name": "dsh-plugin-goodtypst",
-  "version": "0.1.0",
-  "description": "GoodTypst：把 Typst 文档接进 DSH 会话，改稿、编译、看排版结果",
+  "version": "0.2.0",
+  "description": "GoodTypst：把 Typst 文档接进 DSH 会话——内置阅读文稿与演示文稿两套模板，并用风格检查守住版式",
   "type": "module",
   "license": "MIT",
   "author": "James-Yao-xj",
@@ -21,7 +21,9 @@
     "plugin",
     "typst",
     "typesetting",
-    "pdf"
+    "pdf",
+    "template",
+    "slides"
   ],
   "main": "lib/index.js",
   "exports": {
@@ -33,6 +35,8 @@
   },
   "files": [
     "lib",
+    "templates",
+    "prompts",
     "cordis.patch.yml",
     "icon.svg",
     "README.md",
