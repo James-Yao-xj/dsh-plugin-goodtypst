@@ -1,6 +1,6 @@
 {
   "name": "dsh-plugin-goodtypst",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "GoodTypst：把 Typst 文档接进 DSH 会话——内置阅读文稿与演示文稿两套模板，并用风格检查守住版式",
   "type": "module",
   "license": "MIT",

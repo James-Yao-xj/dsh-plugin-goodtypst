@@ -80,6 +80,18 @@ test('演示文稿：带框卡片与并列结构都报 error，主题色不报',
 });
 
 
+test('直角引号在两种文稿里都报 error', () => {
+  const reading = [CONTENT_MARKER, '= 标题', '他说\u300c不行\u300d。'].join('\n');
+  const readingResult = lint(reading, 'reading');
+  assert.equal(readingResult.ok, false);
+  assert.ok(rulesOf(readingResult).includes('reading.quotes'));
+
+  const slides = [CONTENT_MARKER, '#slide(title: "标题", section: "语境")[他说\u300c不行\u300d。]'].join('\n');
+  const slidesResult = lint(slides, 'slides');
+  assert.equal(slidesResult.ok, false);
+  assert.ok(rulesOf(slidesResult).includes('slides.quotes'));
+});
+
 test('演示文稿：大号数字块（metric）报 error，数字写进句子才放过', () => {
   const bad = [CONTENT_MARKER, '#metric("36.2%", "说明")', '#metric("7,189", "路径数", color: pku-blue)'].join('\n');
   const badResult = lint(bad, 'slides');

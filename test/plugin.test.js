@@ -77,7 +77,7 @@ function mount(files = {}, overrides = {}, policy = undefined) {
 test('插件身份与依赖声明', () => {
   assert.equal(pluginName, 'goodtypst');
   assert.deepEqual(inject, ['tools', 'fs', 'systemPrompt']);
-  assert.equal(PLUGIN_VERSION, '0.3.0');
+  assert.equal(PLUGIN_VERSION, '0.4.0');
 });
 
 test('默认配置走 cordis.patch.yml 里承诺的那套值', () => {
@@ -107,7 +107,7 @@ test('不给 path 时只回报插件状态', async () => {
   const value = await call('goodtypst_status', {});
   assert.deepEqual(value, {
     ready: true,
-    pluginVersion: '0.3.0',
+    pluginVersion: '0.4.0',
     typstBinary: 'typst',
     maxSourceBytes: 4194304,
     templates: ['reading', 'slides']
@@ -179,6 +179,18 @@ test('写入被文件策略拦下时，报错改成能照着做的一句话', as
     throw error;
   };
   await assert.rejects(() => call('goodtypst_new', { kind: 'reading', path: 'a.typ' }), /文件策略不允许写这个位置/);
+});
+
+test('两种文稿都不允许直角引号', async () => {
+  const reading = ['// GoodTypst:content', '= 标题', '他说“不行”。'].join('\n').replace('“', '\u300c').replace('”', '\u300d');
+  const readingMount = mount({ 'a.typ': reading });
+  const readingValue = await readingMount.call('goodtypst_check', { kind: 'reading', path: 'a.typ' });
+  assert.ok(readingValue.violations.some((v) => v.rule === 'reading.quotes'));
+
+  const slides = ['// GoodTypst:content', '#slide(title: "标题", section: "语境")[正文]', '备注\u300c引用\u300d'].join('\n');
+  const slidesMount = mount({ 'b.typ': slides });
+  const slidesValue = await slidesMount.call('goodtypst_check', { kind: 'slides', path: 'b.typ' });
+  assert.ok(slidesValue.violations.some((v) => v.rule === 'slides.quotes'));
 });
 
 test('kind 写错时给出可选值', async () => {
