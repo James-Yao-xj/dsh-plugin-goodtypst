@@ -90,6 +90,9 @@ test('直角引号在两种文稿里都报 error', () => {
   const slidesResult = lint(slides, 'slides');
   assert.equal(slidesResult.ok, false);
   assert.ok(rulesOf(slidesResult).includes('slides.quotes'));
+
+  const double = [CONTENT_MARKER, '= 标题', '他说\u300e不行\u300f。'].join('\n');
+  assert.ok(rulesOf(lint(double, 'reading')).includes('reading.quotes'));
 });
 
 test('演示文稿：大号数字块（metric）报 error，数字写进句子才放过', () => {

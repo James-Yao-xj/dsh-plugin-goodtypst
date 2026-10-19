@@ -77,7 +77,7 @@ function mount(files = {}, overrides = {}, policy = undefined) {
 test('插件身份与依赖声明', () => {
   assert.equal(pluginName, 'goodtypst');
   assert.deepEqual(inject, ['tools', 'fs', 'systemPrompt']);
-  assert.equal(PLUGIN_VERSION, '0.4.0');
+  assert.equal(PLUGIN_VERSION, '0.4.1');
 });
 
 test('默认配置走 cordis.patch.yml 里承诺的那套值', () => {
@@ -107,7 +107,7 @@ test('不给 path 时只回报插件状态', async () => {
   const value = await call('goodtypst_status', {});
   assert.deepEqual(value, {
     ready: true,
-    pluginVersion: '0.4.0',
+    pluginVersion: '0.4.1',
     typstBinary: 'typst',
     maxSourceBytes: 4194304,
     templates: ['reading', 'slides']
@@ -191,6 +191,11 @@ test('两种文稿都不允许直角引号', async () => {
   const slidesMount = mount({ 'b.typ': slides });
   const slidesValue = await slidesMount.call('goodtypst_check', { kind: 'slides', path: 'b.typ' });
   assert.ok(slidesValue.violations.some((v) => v.rule === 'slides.quotes'));
+
+  const double = ['// GoodTypst:content', '= 标题', '他说\u300e不行\u300f。'].join('\n');
+  const doubleMount = mount({ 'c.typ': double });
+  const doubleValue = await doubleMount.call('goodtypst_check', { kind: 'reading', path: 'c.typ' });
+  assert.ok(doubleValue.violations.some((v) => v.rule === 'reading.quotes'));
 });
 
 test('kind 写错时给出可选值', async () => {
